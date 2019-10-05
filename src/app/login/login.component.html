@@ -1,4 +1,9 @@
-
-<input type="text" placeholder="User Name">
-<input type="password" placeholder="Password">
-<button (click)=login()>Login</button>
+<div>
+    <form [formGroup]="userForm">
+        <div class="form-group">
+            <input type="text" placeholder="User Name" formControlName="name" />
+            <input type="password" placeholder="Password" formControlName="password" />
+        </div>
+        <button class="btn btn-primary" (click)=login()>Login</button>
+    </form>
+</div>
