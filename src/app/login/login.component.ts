@@ -25,22 +25,18 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
     });
   }
-  
+
   login() {
-    const name = this.userForm.controls['name'].value;
+    const loginUserData: any = {};
+    const email = this.userForm.controls['name'].value;
     const pwd = this.userForm.controls['password'].value;
-    this.loginService.validateUser().subscribe(res => {
-      console.log('i am resp : ', res);
-      this.userArray = res;
-      this.returnedname = (res as any)[0]['name'];
-      return res;
-    });
-    console.log(name);
-    console.log(pwd);
-    console.log('this is the user array after assignment : ', this.userArray);
-    // setTimeout(() => {
-    //   alert('hello text :' + this.returnedname)
-    // }, 3000);
-    console.log('this is the user array after assignment : ', this.returnedname);
+    loginUserData.email = email;
+    loginUserData.password = pwd;
+    this.loginService.loggedIn(loginUserData).subscribe(
+      res => {
+        localStorage.setItem('token', res['token']);
+      },
+      err => console.log(err)
+    );
   }
 }

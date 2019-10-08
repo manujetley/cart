@@ -1,4 +1,5 @@
 const express = require('express')
+const jwt = require('jsonwebtoken')
 const User = require('./models/user')
 const router = express.Router()
 const mongoose = require('mongoose')
@@ -30,8 +31,10 @@ router.post('/register', (req, res) => {
         if (error) {
             console.log(error)
         } else {
-            user.status(200).send(registeredUser)
-        }
+            let payload = { subject: registeredUser.id }
+            let token = jwt.sign(payload, 'secretkey')
+            res.status(200).send({ token })
+}
     })
 
 })
@@ -40,7 +43,7 @@ router.post('/login', (req, res) => {
     let userData = req.body;
     console.log("request output : ", userData)
     console.log("request output email:", userData.email)
-    User.findOne({'email': 'a@a.com'}, (error, user) => {
+    User.findOne({ 'email': userData.email }, (error, user) => {
         console.log("userrrrrrrrrr: ", user)
         console.log("res.passworddddd: ", res.password)
         console.log("user.password: ", user.password)
@@ -51,27 +54,12 @@ router.post('/login', (req, res) => {
                 res.status(401).send('Invalid email!!')
             } else if (user.password !== userData.password) {
                 res.status(401).send('Invalid password!!')
-            } else {
-                res.status(200).send(user)
+            } else  {
+                let payload = { subject: user.id};
+                const token = jwt.sign(payload, 'secretkey');
+                res.status(200).send({token})
             }
         }
     })
 })
 module.exports = router
-
-
-
-
-/*
-
-//Full Driver Example
-// const MongoClient = require('mongodb').MongoClient;
-// const uri = "mongodb+srv://mybookbook2@gmail.com:Manish@123@cluster0-vtdzw.mongodb.net/admin?retryWrites=true&w=majority";
-// const client = new MongoClient(uri, { useNewUrlParser: true });
-// client.connect(err => {
-//   const collection = client.db("test").collection("devices");
-//   // perform actions on the collection object.
-//   client.close();
-// });
-
-*/

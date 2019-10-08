@@ -14,7 +14,7 @@ export class LoginService {
     return this.http.get(this.baseurl);
   }
 
-  loggedIn() {
-    return true;
+  loggedIn(user: any) {
+    return this.http.post<any>(this.baseurl + '/login', user);
   }
 }
