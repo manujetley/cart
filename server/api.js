@@ -34,7 +34,7 @@ router.post('/register', (req, res) => {
             let payload = { subject: registeredUser.id }
             let token = jwt.sign(payload, 'secretkey')
             res.status(200).send({ token })
-}
+        }
     })
 
 })
@@ -54,10 +54,10 @@ router.post('/login', (req, res) => {
                 res.status(401).send('Invalid email!!')
             } else if (user.password !== userData.password) {
                 res.status(401).send('Invalid password!!')
-            } else  {
-                let payload = { subject: user.id};
+            } else {
+                let payload = { subject: user.id };
                 const token = jwt.sign(payload, 'secretkey');
-                res.status(200).send({token})
+                res.status(200).send({ token })
             }
         }
     })

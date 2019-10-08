@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { LoginService } from './login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ export class LoginComponent implements OnInit {
   userForm: FormGroup;
   public userArray: any;
   returnedname: string;
-  constructor(private fb: FormBuilder, private loginService: LoginService) {
+  constructor(private fb: FormBuilder, private loginService: LoginService, private route: Router) {
     this.initializeForm(fb);
     this.userArray = [];
   }
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit {
     this.loginService.loggedIn(loginUserData).subscribe(
       res => {
         localStorage.setItem('token', res['token']);
+        this.route.navigate(['/dashboard']);
       },
       err => console.log(err)
     );

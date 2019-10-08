@@ -6,9 +6,11 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PlannerComponent } from './planner/planner.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard } from './auth.guard';
 import { LoginService } from './login/login.service';
+import { TokenInterceptorService } from './token-interceptor.service';
+
 
 const router = [
   {
@@ -38,7 +40,11 @@ const router = [
     RouterModule.forRoot(router)
   ],
   exports: [RouterModule],
-  providers: [AuthGuard, LoginService],
+  providers: [AuthGuard, LoginService, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
